@@ -1,6 +1,7 @@
 import React from "react";
 import { AppBar, Typography, Toolbar, Avatar, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import logo from './logo.jpg';
 
 import useStyles from "./styles";
 
@@ -23,7 +24,7 @@ const Navbar = () => {
           variant="h2"
           align="center"
         >
-          Dowell
+          <img className={classes.image} src={logo} alt="logo" height="60" />
         </Typography>
       </div>
       <Toolbar className={classes.toolbar}>

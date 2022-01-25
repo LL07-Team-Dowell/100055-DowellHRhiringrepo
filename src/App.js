@@ -1,19 +1,21 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Auth from './components/Auth/Auth';
 
 const App = () => (
-  <BrowserRouter>
+  <Router>
     <Container maxWidth="lg">
       <Navbar />
-      <Home />
-      <Auth/>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/Auth' element={<Auth/>} />
+      </Routes>
     </Container>
-  </BrowserRouter>
+  </Router>
 );
 
 export default App;
