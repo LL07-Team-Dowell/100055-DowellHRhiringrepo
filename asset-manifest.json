@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.js": "/100055-DowellHRhiringrepo/static/js/main.187f442b.js",
+    "main.js": "/100055-DowellHRhiringrepo/static/js/main.fa4e249e.js",
+    "static/media/logo.jpg": "/100055-DowellHRhiringrepo/static/media/logo.ae6ff5e0f37a361774e5.jpg",
     "index.html": "/100055-DowellHRhiringrepo/index.html",
-    "main.187f442b.js.map": "/100055-DowellHRhiringrepo/static/js/main.187f442b.js.map"
+    "main.fa4e249e.js.map": "/100055-DowellHRhiringrepo/static/js/main.fa4e249e.js.map"
   },
   "entrypoints": [
-    "static/js/main.187f442b.js"
+    "static/js/main.fa4e249e.js"
   ]
 }
