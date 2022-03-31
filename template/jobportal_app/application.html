@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Apply for role {% endblock %}
+{% block body_block %}
+<h3>Apply For Role</h3>
+
+{% if filled %}
+<div class="alert alert-success">
+   Applied successfully
+</div>
+{% else %}
+<form method="POST">
+    {{form|crispy}}
+    {% csrf_token %}
+    <p>By submitting this form you are agreeing to all terms and conditions specified in this form.</p><br>																								
+    <button name="submit" class="btn btn-success btn-sm">Submit</button>
+    
+</form>
+{% endif %}
+{% endblock  %}
