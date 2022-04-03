@@ -1,0 +1,2 @@
+#all items to be ignored while uploading to github
+venv
