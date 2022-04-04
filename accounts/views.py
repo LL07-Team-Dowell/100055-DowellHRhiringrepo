@@ -1,60 +1,32 @@
-from curses.ascii import HT
-from http.client import HTTPResponse
-from django.shortcuts import render, HttpResponse
-from rest_framework.decorators import api_view
+from django.contrib.auth import login
+from rest_framework import generics, permissions
 from rest_framework.response import Response
-from accounts.models import CustomUser
-from .serializers import CustomUserSerializer, CustomUserViewSet
-from .forms import MyCustomUserCreationForm
-# Create your views here.
+from knox.models import AuthToken
+from .serializers import UserSerializer, RegisterSerializer
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from knox.views import LoginView as KnoxLoginView
+# Register API
 
 
-@api_view(['POST'])
-def login(request):
-    page = 'login'
-    if request.user.is_authenticated:
-        messages.success(request, "User is already Logged in")
-        return redirect('home')
+class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
 
-    if request.method == "POST":
-        email = request.POST.get('email').lower()
-        password = request.POST.get('password')
-        try:
-            user = CustomUser.objects.get(email=email)
-        except:
-            messages.error(request, "User does not exist")
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(
-                request, f'Welcome {user.username}, You have successfully logged in')
-            return redirect('home')
-        else:
-            messages.error(request, 'Invalid Username or Password')
-
-    context = {'page': page}
-    return render(request, 'base/login_register.html', context)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
 
 
-@api_view(['GET', 'POST'])
-def signup(request, pk):
-    page = "register"
-    form = MyCustomUserCreationForm()
-    context = {'page': page, 'form': form}
-    if request.method == 'POST':
-        form = MyCustomUserCreationForm(request.POST)
-        if form.is_valid:
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()
-            HTTPResponse("You Have Successfully signed up for Dowell")
-            login(request, user)
-        else:
-            HTTPResponse("Some error occured")
-            #messages.error(request, 'An error occured')
+class LoginAPI(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
 
-
-@api_view(['GET'])
-def logout(request):
-    logout(request)
-    HTTPResponse("You Have Successfully logged out")
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginAPI, self).post(request, format=None)
