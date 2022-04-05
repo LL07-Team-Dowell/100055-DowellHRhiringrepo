@@ -16,5 +16,5 @@ class CustomUser(AbstractUser):
     is_hr = models.BooleanField(default=False, null=True)
     is_team_leader = models.BooleanField(default=False, null=True)
 
-    def __str__(self):
-        return self.name, self.email
+    def str(self):
+        return f'{self.username}, {self.email}'
