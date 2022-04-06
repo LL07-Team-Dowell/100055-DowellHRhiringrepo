@@ -1,6 +1,6 @@
 from rest_framework import serializers
-#from django.contrib.auth.models import User
-from .models import CustomUser
+from rest_framework.serializers import ModelSerializer
+from .models import CustomUser, Job, JobApplication
 # User Serializer
 
 
@@ -23,3 +23,15 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data['username'], validated_data['email'], validated_data['password'])
 
         return user
+
+
+class JobSerializer(ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+
+class JobApplicationSerializer(ModelSerializer):
+    class Meta:
+        model = JobApplication
+        fields = '__all__'
